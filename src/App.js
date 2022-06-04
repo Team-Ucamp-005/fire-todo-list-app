@@ -3,9 +3,7 @@ import env from "react-dotenv";
 
 import {
   onSnapshot,
-  query,
   collection,
-  orderBy,
   addDoc,
   doc,
   deleteDoc,
