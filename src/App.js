@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react'
+import env from "react-dotenv";
 
-import { onSnapshot, query, collection, orderBy, addDoc } from 'firebase/firestore'
+import {
+  onSnapshot,
+  query,
+  collection,
+  orderBy,
+  addDoc,
+  doc,
+  deleteDoc,
+  setDoc
+} from 'firebase/firestore'
 import { db } from './firebase.js'
 
 import './App.css';
@@ -14,13 +24,15 @@ const App = () => {
 
     onSnapshot(collection(db, 'todos'), (snapshot) => {
       snapshot.docs.forEach((doc) => {
-        todosArr.push(doc.data())
+        todosArr.push({
+          ...doc.data(),
+          id: doc.id
+        })
+        console.log(todosArr)
         setTodos(todosArr)
-        console.log(doc.data())
       })
     })
   }
-
   const handleChange = (ev) => {
     const date = new Date(Date.now())
     setForm({
@@ -35,9 +47,20 @@ const App = () => {
     setForm({})
     getData()
   }
+  const deleteElement = async (id) => {
+    console.log(id);
+    await deleteDoc(doc(db, 'todos', id));
+    getData();
+  }
+
+  const updateElement = async (id, data) => {
+    await setDoc(doc(db, 'todos', id), data)
+    getData()
+  }
 
   useEffect(() => {
     getData()
+    console.log(env.HOLI)
   }, [])
 
   return (
@@ -59,6 +82,12 @@ const App = () => {
                 <>
                   <h3>{todo.titulo}</h3>
                   <p>{todo.descripcion}</p>
+                  <button onClick={() => deleteElement(todo.id)}>
+                    Eliminar
+                  </button>
+                  <button onClick={() => updateElement(todo.id, { ...todo, check: !todo.check })} >
+                    {todo.check ? 'Desmarcar' : 'Marcar'}
+                  </button>
                 </>
               )
             })
