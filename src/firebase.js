@@ -3,7 +3,7 @@ import { getFirestore } from 'firebase/firestore'
 import env from 'react-dotenv';
 
 const firebaseConfig = {
-  apiKey: env.API_KEY_FIREBASE,
+  apiKey: "AIzaSyCImySRNy8lV5mkS_I_0hFuoFNtqSOb6Cs",
   authDomain: "crud-react-cbf65.firebaseapp.com",
   projectId: "crud-react-cbf65",
   storageBucket: "crud-react-cbf65.appspot.com",
